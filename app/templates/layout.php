@@ -4,18 +4,17 @@
 	<meta charset="UTF-8">
 	<title><?= $this->e($title) ?></title>
 
+	<!-- <link rel="stylesheet" href="../../vendor/bootstrap/bootstrap.min.css'"> -->
+	<link rel="stylesheet" href="<?= $this->assetUrl('css/bootstrap.min.css') ?>">
 	<link rel="stylesheet" href="<?= $this->assetUrl('css/style.css') ?>">
+
 </head>
 <body>
 	<div class="container">
 		<header>
 			<h1>W :: <?= $this->e($title) ?></h1>
-			<nav>
-				<a href="<?= $this->url('home') ?>">Accueil</a>
-				<a href="<?= $this->url('contact') ?>">Contact</a>
-				<a href="<?= $this->url('products_index') ?>">Liste des produits</a>
-			</nav>
-		</header>
+			<?php include 'navigation.php'; ?>
+		</header>		
 
 		<section>
 			<?= $this->section('main_content') ?>

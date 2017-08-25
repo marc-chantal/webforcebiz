@@ -2,8 +2,8 @@
 
 <?php $this->start('main_content') ?>
 	
-    <h2>Modifier un produit</h2>
+	<h2>Modifier un produit</h2>
 
-<?php include 'form.php'; ?>
+	<?php include 'form.php'; ?>
 
 <?php $this->stop('main_content') ?>

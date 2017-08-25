@@ -9,16 +9,24 @@ use \Manager\ProductsManager;
 class ProductsController extends Controller
 // on aurait pu écrire "extends \W\Controller\Controller"
 {
+	private $product_manager;
+
+	/**
+	 * Constructeur
+	 * instanciation d'un ProductsManager
+	 */
+	public function __construct()
+	{
+		$this->product_manager = new ProductsManager;
+	}
 
 	/**
 	 * Liste des produits
 	 */
 	public function index()
 	{
-		$products = new ProductsManager;
-
 		$this->show('products/index', [
-			'products' => $products->findAll()
+			'products' => $this->product_manager->findAll()
 		]);
 	}
 
@@ -40,14 +48,14 @@ class ProductsController extends Controller
 			$name = $_POST['name'];
 			$description = $_POST['description'];
 			$image = $_POST['image'];
-			$price = $_POST['price'];
+			$price = floatval($_POST['price']);
 
 			// Contrôle et formatage des données
-			
-			// Enregistrement en bdd
+			if(!$price) $save = false;
+
 			if($save) {
-				$products = new ProductsManager;
-				$product = $products->insert([
+				// Enregistrement en bdd
+				$product = $this->product_manager->insert([
 					'name' => $name,
 					'description' => $description,
 					'image' => $image,
@@ -72,9 +80,8 @@ class ProductsController extends Controller
 	 */
 	public function view($id)
 	{
-		$products = new ProductsManager;
 		$this->show('products/view', 
-			$products->find($id)
+			$this->product_manager->find($id)
 		);
 	}
 
@@ -83,8 +90,7 @@ class ProductsController extends Controller
 	 */
 	public function edit($id)
 	{
-		$products = new ProductsManager;
-		$product = $products->find($id);
+		$product = $this->product_manager->find($id);
 		$name = $product['name'];
 		$description = $product['description'];
 		$image = $product['image'];
@@ -98,13 +104,14 @@ class ProductsController extends Controller
 			$name = $_POST['name'];
 			$description = $_POST['description'];
 			$image = $_POST['image'];
-			$price = $_POST['price'];
+			$price = floatval($_POST['price']);
 
 			// Contrôle et formatage des données
-			
-			// Enregistrement en bdd
+			if(!$price) $save = false;
+
 			if($save) {
-				$product = $products->update([
+				// Enregistrement en bdd
+				$product = $this->product_manager->update([
 					'name' => $name,
 					'description' => $description,
 					'image' => $image,
@@ -130,11 +137,22 @@ class ProductsController extends Controller
 	 */
 	public function delete($id)
 	{
-		// Suppression
-		$products = new ProductsManager;
-		$products->delete($id);
-		// Redirection vers la liste des produits
-		$this->redirectToRoute('products_index');
+		$product = $this->product_manager->find($id);
+
+		if($_SERVER['REQUEST_METHOD'] === 'POST') {
+			// Suppression
+			$this->product_manager->delete($id);
+			// Redirection vers la liste des produits
+			$this->redirectToRoute('products_index');
+		}
+
+		$this->show('products/delete', [
+			'product' => $product
+		]);
+
+
+
+		
 	}
 
 }

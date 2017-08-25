@@ -6,8 +6,8 @@
 	<a href="<?= $this->url('products_delete', ['id' => $id]) ?>">Effacer le produit</a>
 
 	<h2><?= $name ?></h2>
-	<p><?= $image ?></p>
+	<img class="img-thumbnail" src="<?= $this->assetUrl('img/'.$image) ?>" />
     <p>Description : <?= $description ?></p>
-    <p>Prix : <?= $price ?></p>
+    <p>Prix : <?= $price ?> €</p>
     
 <?php $this->stop('main_content') ?>
